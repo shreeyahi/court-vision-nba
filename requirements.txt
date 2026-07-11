@@ -4,8 +4,6 @@ pyarrow
 duckdb
 scikit-learn
 nba_api==1.11.4
-streamlit
-plotly
 pydantic
 joblib
 pytest

@@ -1,0 +1,8 @@
+{
+  "scenario_id": "OFFICIAL_ONLY",
+  "simulations": 20000,
+  "random_seed": 42,
+  "forecast_mae_wins": 9.56,
+  "historical_home_win_rate": 0.5644636232871527,
+  "home_advantage_probability": 0.06446362328715272
+}
