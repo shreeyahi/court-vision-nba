@@ -1,171 +1,203 @@
 # CourtVision NBA
 
-A reproducible, trade-aware NBA standings and playoff simulation pipeline for the 2026–27 season.
+A reproducible 2026–27 NBA standings projection updated for official offseason trades, free-agent signings, waivers, and other team-changing roster moves.
 
-CourtVision combines verified transaction data, 11 seasons of NBA games, three seasons of player statistics, time-aware machine learning, transparent player-impact estimates, and 20,000 Monte Carlo simulations.
+> Offseason snapshot: July 11, 2026 at 5:52 PM. Reported and on-hold moves are excluded from the official projection until finalized.
 
-> Data snapshot verified through July 11, 2026. This is an analytical portfolio project, not betting advice.
+## Projected 2026–27 Eastern Conference Standings
 
-## Current Results
-
-### Championship favorites
-
-| Rank | Team | Championship probability |
+| Seed | Team | Record |
 |---:|---|---:|
-| 1 | San Antonio Spurs | 12.0% |
-| 2 | Oklahoma City Thunder | 9.5% |
-| 3 | Detroit Pistons | 9.1% |
-| 4 | New York Knicks | 5.4% |
-| 5 | Houston Rockets | 5.4% |
+| 1 | Detroit Pistons | **53–29** |
+| 2 | New York Knicks | **49–33** |
+| 3 | Charlotte Hornets | **47–35** |
+| 4 | Boston Celtics | **47–35** |
+| 5 | Cleveland Cavaliers | **46–36** |
+| 6 | Atlanta Hawks | **46–36** |
+| 7 | Toronto Raptors | **45–37** |
+| 8 | Orlando Magic | **45–37** |
+| 9 | Philadelphia 76ers | **45–37** |
+| 10 | Miami Heat | **45–37** |
+| 11 | Chicago Bulls | **36–46** |
+| 12 | Milwaukee Bucks | **31–51** |
+| 13 | Brooklyn Nets | **28–54** |
+| 14 | Washington Wizards | **28–54** |
+| 15 | Indiana Pacers | **26–56** |
 
-### Conference Finals probabilities
+## Projected 2026–27 Western Conference Standings
 
-| Conference | Team | ECF/WCF probability |
-|---|---|---:|
-| West | San Antonio Spurs | 41.5% |
-| West | Oklahoma City Thunder | 34.8% |
-| West | Houston Rockets | 22.3% |
-| East | Detroit Pistons | 34.8% |
-| East | New York Knicks | 22.7% |
-| East | Boston Celtics | 19.8% |
+| Seed | Team | Record |
+|---:|---|---:|
+| 1 | San Antonio Spurs | **57–25** |
+| 2 | Oklahoma City Thunder | **54–28** |
+| 3 | Houston Rockets | **49–33** |
+| 4 | Denver Nuggets | **48–34** |
+| 5 | Los Angeles Lakers | **45–37** |
+| 6 | Phoenix Suns | **44–38** |
+| 7 | Portland Trail Blazers | **43–39** |
+| 8 | Minnesota Timberwolves | **43–39** |
+| 9 | LA Clippers | **40–42** |
+| 10 | Golden State Warriors | **38–44** |
+| 11 | New Orleans Pelicans | **34–48** |
+| 12 | Dallas Mavericks | **33–49** |
+| 13 | Utah Jazz | **29–53** |
+| 14 | Memphis Grizzlies | **29–53** |
+| 15 | Sacramento Kings | **27–55** |
 
-### Largest official trade adjustments
+## What the Projection Includes
 
-| Team | Estimated win change |
+The default standings apply:
+
+- Official offseason player trades
+- Official free-agent moves between NBA teams
+- Official sign-and-trades
+- Official waiver claims
+- Players joining from outside the NBA
+- Historical player availability
+- Three seasons of player-impact data
+- Eleven seasons of team results
+
+The default standings do not apply:
+
+- Reported agreements that are not official
+- On-hold transactions
+- Re-signings, because the player remains on the same team
+- Draft picks as immediate on-court production
+- Unknown future injuries
+
+## Offseason Movement Snapshot
+
+| Category | Count |
 |---|---:|
-| Washington Wizards | +1.74 |
-| Philadelphia 76ers | +1.73 |
-| Chicago Bulls | +1.67 |
-| Miami Heat | +1.62 |
-| Minnesota Timberwolves | -2.62 |
-| Boston Celtics | -1.73 |
+| Historical regular-season games | 13,209 |
+| Historical NBA seasons | 11 |
+| Player-season records | 1,723 |
+| Unique players | 802 |
+| Traded players matched by NBA ID | 40/40 |
+| Official trade transactions | 11 |
+| Official additional roster movements | 27 |
+| Reported roster movements excluded | 5 |
+| Projected teams | 30 |
+| League wins | 1,230 |
+| League losses | 1,230 |
 
-These adjustments measure player value transferred relative to a no-trade team baseline. They are estimates, not guarantees.
-
-## Why This Project Exists
-
-Offseason predictions often mix official trades, rumors, personal opinions, and unexplained ratings.
-
-CourtVision handles them separately:
-
-- Official transactions affect the default prediction.
-- Reported transactions remain optional scenarios.
-- On-hold transactions remain optional scenarios.
-- Every traded player is joined using an NBA player ID.
-- Draft assets stay in the ledger but do not pretend to score points next season.
-- Model uncertainty is published instead of hidden.
-
-## Pipeline
+## How It Works
 
 ```mermaid
 flowchart LR
-    A["Verified trade ledger"] --> D["Trade impact"]
-    B["11 seasons of NBA games"] --> C["Team-season features"]
-    C --> E["Time-aware standings model"]
-    F["3 seasons of player stats"] --> D
-    E --> G["No-trade 2026-27 baseline"]
-    D --> H["Trade-adjusted standings"]
-    G --> H
-    H --> I["20,000 season simulations"]
-    B --> I
-    I --> J["Play-In, ECF, WCF, Finals and title odds"]
+    A["11 seasons of NBA games"] --> C["Team baseline"]
+    B["3 seasons of player stats"] --> D["Player impact"]
+    E["Official trades"] --> F["Roster changes"]
+    G["Official free agency"] --> F
+    H["Waivers and other moves"] --> F
+    D --> F
+    C --> I["2026-27 team strength"]
+    F --> I
+    I --> J["East and West seeds"]
+    J --> K["Projected 82-game records"]
 ```
 
-## Data Summary
+### Step 1: Historical team baseline
 
-- 13,209 regular-season games
-- 11 NBA seasons from 2015–16 through 2025–26
-- 30 teams per season
-- 1,723 player-season records
-- 802 unique players
-- 40 of 40 traded players matched by NBA player ID
-- 96 trade-asset rows
-- 13 transactions
-- 11 official transactions
-- 2 non-official scenarios
-- 20,000 postseason simulations
-
-## Modeling Approach
-
-### 1. Historical team baseline
-
-Each team-season contains:
+CourtVision builds one report card for every team and season using:
 
 - Win percentage
-- Points scored and allowed per game
+- Points scored per game
+- Points allowed per game
 - Average point margin
 - Home and away performance
 - Previous-season performance
 - Two-season rolling performance
 
-The model comparison uses a chronological split:
+The model uses chronological evaluation:
 
-- Training: through 2023–24
-- Validation and model selection: 2024–25
-- Untouched final test: 2025–26
+| Split | Seasons |
+|---|---|
+| Training | Through 2023–24 |
+| Validation | 2024–25 |
+| Untouched test | 2025–26 |
 
 Ridge regression with `alpha=1` won the validation comparison.
 
-| Evaluation | MAE |
+The untouched 2025–26 test mean absolute error was **9.56 wins**. This error is published rather than hidden.
+
+### Step 2: Player impact
+
+Player value uses recency-weighted NBA Player Impact Estimate, minutes, and availability.
+
+| Season | Weight |
 |---|---:|
-| 2024–25 validation | 8.16 wins |
-| 2025–26 untouched test | 9.56 wins |
+| 2023–24 | 15% |
+| 2024–25 | 30% |
+| 2025–26 | 55% |
 
-The test error is intentionally visible and becomes the uncertainty input for the simulator.
-
-### 2. Player and trade impact
-
-Player value uses the NBA Player Impact Estimate with:
-
-- 2023–24 weight: 15%
-- 2024–25 weight: 30%
-- 2025–26 weight: 55%
-- Playing-time adjustment
-- Availability adjustment
-- Replacement-level comparison
-
-The transparent estimate is:
+The transparent player estimate is:
 
 ```text
 estimated wins above replacement =
     (weighted PIE - replacement PIE)
-    × minutes per game / 48
-    × availability
+    × weighted minutes / 48
+    × weighted availability
     × 82
 ```
 
-Team trade impact is zero-sum:
+### Step 3: Apply every official team change
+
+For each team:
 
 ```text
-team trade delta =
-    value received - value sent
+offseason win adjustment =
+    player value received
+    - player value lost
 ```
 
-### 3. Monte Carlo postseason simulation
+The final projection is:
 
-Each simulation:
+```text
+projected team strength =
+    historical team baseline
+    + official trade adjustment
+    + official free-agency adjustment
+```
 
-1. Samples regular-season uncertainty using the honest 9.56-win test MAE.
-2. Rebuilds East and West standings.
-3. Simulates the NBA 7–10 Play-In format.
-4. Simulates every best-of-seven series.
-5. Applies a historical home-court advantage estimated from 13,209 games.
-6. Records ECF, WCF, Finals, and championship outcomes.
+Records are normalized so the league contains exactly:
 
-The random seed is fixed, making published results reproducible.
+```text
+1,230 wins
+1,230 losses
+82 games per team
+```
 
-## Reproduce the Project
+## Data Integrity
 
-### Requirements
+CourtVision keeps transaction states separate:
 
-- Python 3.11 or newer
-- Internet access for the NBA data-download steps
+- `OFFICIAL`: included in the default standings
+- `REPORTED`: stored but excluded
+- `ON_HOLD`: stored but excluded
+
+Players are joined using official NBA player IDs rather than name matching.
+
+The offseason source snapshot comes from the NBA’s league-wide tracker:
+
+- [NBA 2026 offseason tracker](https://www.nba.com/news/nba-offseason-deals-2026)
+- [NBA 2026 trade tracker](https://www.nba.com/news/2026-offseason-trade-tracker)
+
+## Published Results
+
+Visitors can inspect the final outputs without downloading the full historical dataset:
+
+- [Full 2026–27 standings projection](reports/official_standings_2026_27.csv)
+- [Official and reported roster-movement impacts](reports/roster_move_impacts_2026.csv)
+- [Trade-player impact estimates](reports/trade_player_impacts_2026.csv)
+
+## Reproduce the Projection
 
 ### Installation
 
 ```bash
 git clone https://github.com/shreeyahi/court-vision-nba.git
-cd courtvision-nba
+cd court-vision-nba
 
 python3 -m venv .venv
 source .venv/bin/activate
@@ -174,26 +206,19 @@ python -m pip install --upgrade pip
 python -m pip install -e ".[dev]"
 ```
 
-Replace `https://github.com/shreeyahi/court-vision-nba.git` after publishing the repository.
-
-### Validate the transaction ledger
+### Run the pipeline
 
 ```bash
 python src/courtvision/data/validate.py
-```
-
-### Build every dataset and prediction
-
-```bash
 python src/courtvision/data/fetch_games.py
 python src/courtvision/data/fetch_player_stats.py
 python src/courtvision/features/build_team_seasons.py
 python src/courtvision/models/train_baseline.py
 python src/courtvision/features/build_trade_impact.py
-python src/courtvision/models/simulate.py
+python src/courtvision/features/build_offseason_standings.py
 ```
 
-Raw downloads are cached. Re-running the pipeline does not download them again unless `--force` is used.
+Raw NBA downloads are cached locally and ignored by Git.
 
 ### Run quality checks
 
@@ -202,63 +227,43 @@ ruff check src scripts tests
 python -m pytest
 ```
 
-## Published Outputs
-
-Small result snapshots are committed so visitors can inspect the findings without downloading the full NBA dataset:
-
-- [Official 2026–27 standings](reports/official_standings_2026_27.csv)
-- [Playoff and championship probabilities](reports/playoff_probabilities_2026_27.csv)
-- [Traded-player impact estimates](reports/trade_player_impacts_2026.csv)
-- [Simulation metadata](reports/simulation_metadata.json)
-
 ## Repository Structure
 
 ```text
-courtvision-nba/
+court-vision-nba/
 ├── data/
-│   ├── manual/                 # Verified transaction ledger
-│   ├── raw/                    # Cached NBA downloads, ignored by Git
-│   └── processed/              # Generated model datasets, ignored by Git
+│   ├── manual/
+│   │   ├── trades_2026.csv
+│   │   └── roster_moves_2026.csv
+│   ├── raw/
+│   └── processed/
 ├── docs/
 │   ├── data_dictionary.md
 │   └── model_card.md
-├── reports/                    # Small GitHub-visible result snapshots
-├── scripts/                    # Reproducible ledger update scripts
+├── reports/
+│   ├── official_standings_2026_27.csv
+│   ├── roster_move_impacts_2026.csv
+│   └── trade_player_impacts_2026.csv
+├── scripts/
 ├── src/courtvision/
-│   ├── data/                   # Validation and download pipelines
-│   ├── features/               # Team and trade feature engineering
-│   └── models/                 # Baseline model and simulations
+│   ├── data/
+│   ├── features/
+│   └── models/
 ├── tests/
-│   └── test_core.py
 ├── pyproject.toml
 └── requirements.txt
 ```
 
-## Engineering Safeguards
-
-The test suite protects:
-
-- Duplicate NBA matchup-label parsing
-- Home-court probability behavior
-- Reproducible best-of-seven simulations
-- Correct Play-In advancement
-- Exactly 1,230 league wins
-- Zero-sum trade adjustments
-- Valid postseason probability totals
-- The verified transaction ledger
-
-GitHub Actions runs Ruff and Pytest on every push and pull request.
-
 ## Limitations
 
-- CourtVision models trades, not every free-agent signing, coaching change, or future injury.
-- PIE is interpretable but does not perfectly capture defense, lineup fit, or role changes.
-- Player availability uses historical data; future health remains uncertain.
-- Draft picks are recorded but excluded from immediate on-court impact.
+- The 2026 offseason is still active.
+- Results must be rebuilt when reported moves become official.
+- Future injuries cannot be known.
+- Player roles and minutes can change after joining a new team.
+- PIE does not perfectly capture defense or lineup fit.
+- New NBA players without historical NBA data receive a neutral initial impact.
 - The historical model’s untouched test error is 9.56 wins.
-- Probabilities depend on the transaction snapshot date and must be regenerated when league data changes.
-
-See the [model card](docs/model_card.md) for the complete methodology and limitations.
+- These are model projections, not guaranteed results or betting advice.
 
 ## License
 
