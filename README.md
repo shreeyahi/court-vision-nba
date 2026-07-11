@@ -2,7 +2,7 @@
 
 As an NBA enthusiast, the 25-26 offseason has had some crazy moves. From Lamelo to the Timberwolves to Giannis to the Heat. All these trades made me curious of each teams standings in the 2026–27 season. My projection utilizes official offseason trades, free-agent signings, waivers, and other team-changing roster moves.
 
-> Offseason snapshot: July 11, 2026 at 5:52 PM. Reported and on-hold moves are excluded from the official projection until finalized.
+> Offseason snapshot: July 11, 2026 at 5:52 PM GST. Reported and on-hold moves are excluded from the official projection until finalized.
 
 ## Projected 2026–27 Eastern Conference Standings
 
