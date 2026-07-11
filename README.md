@@ -164,7 +164,7 @@ The random seed is fixed, making published results reproducible.
 ### Installation
 
 ```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
+git clone https://github.com/shreeyahi/court-vision-nba.git
 cd courtvision-nba
 
 python3 -m venv .venv
@@ -174,7 +174,7 @@ python -m pip install --upgrade pip
 python -m pip install -e ".[dev]"
 ```
 
-Replace `YOUR_GITHUB_REPOSITORY_URL` after publishing the repository.
+Replace `https://github.com/shreeyahi/court-vision-nba.git` after publishing the repository.
 
 ### Validate the transaction ledger
 
