@@ -44,7 +44,46 @@ A reproducible 2026–27 NBA standings and postseason projection built from comp
 | 14 | Memphis Grizzlies | **29–53** |
 | 15 | Sacramento Kings | **28–54** |
 
-## What Revision 2 Adds
+## What Changed from Revision 1
+
+Revision 2 changed the projected record of **18 out of 30 teams** after replacing isolated transaction bonuses with complete player-level roster projections.
+
+| Team | Revision 1 | Revision 2 | Change |
+|---|---:|---:|---:|
+| Atlanta Hawks | 46–36 | 43–39 | −3 wins |
+| Boston Celtics | 47–35 | 46–36 | −1 |
+| Chicago Bulls | 36–46 | 35–47 | −1 |
+| Cleveland Cavaliers | 46–36 | 49–33 | +3 |
+| Dallas Mavericks | 33–49 | 34–48 | +1 |
+| Denver Nuggets | 48–34 | 49–33 | +1 |
+| Detroit Pistons | 53–29 | 51–31 | −2 |
+| Indiana Pacers | 26–56 | 28–54 | +2 |
+| LA Clippers | 40–42 | 38–44 | −2 |
+| Los Angeles Lakers | 45–37 | 47–35 | +2 |
+| Milwaukee Bucks | 31–51 | 32–50 | +1 |
+| Minnesota Timberwolves | 43–39 | 45–37 | +2 |
+| New York Knicks | 49–33 | 48–34 | −1 |
+| Phoenix Suns | 44–38 | 42–40 | −2 |
+| Sacramento Kings | 27–55 | 28–54 | +1 |
+| San Antonio Spurs | 57–25 | 54–28 | −3 |
+| Utah Jazz | 29–53 | 30–52 | +1 |
+| Washington Wizards | 28–54 | 29–53 | +1 |
+
+The other 12 records remained unchanged after rounding, even though their underlying decimal roster values may have changed.
+
+### How the Feedback Enters the Forecast
+
+- **The 2025 draft class:** Cooper Flagg, Kon Knueppel, and the other 2025–26 rookies enter the 2026–27 forecast as sophomores. Their real rookie statistics are combined with a historically learned sophomore-development curve.
+- **The 2026 draft class:** Incoming rookies receive conservative expectations learned from 2015–2025 rookie results and grouped by draft position. Summer League receives zero weight.
+- **Young-player development:** Players entering their second and third seasons receive separate data-derived changes to PIE, playing time, scoring rate, and availability.
+- **Age:** Veteran players are placed into forecast-age groups. Older players receive historically observed changes to production, minutes, scoring rate, and availability.
+- **Consistent scoring:** Projected PPG is calculated from projected points per 36 and projected minutes instead of assuming last season’s raw PPG remains constant.
+- **Availability:** Every player receives a historical missed-time estimate. Four verified major injuries currently receive explicit low, base, and high recovery scenarios.
+- **Full roster impact:** Every projected player receives a season-level value, each team is limited to exactly 240 minutes per game, and the complete future roster is compared with the actual 2025–26 roster.
+
+For example, Dallas receives a **+1.70-win full-roster adjustment** over its 32-win historical baseline. That produces 33.70 raw wins and a published **34–48** record. This includes Cooper Flagg’s sophomore projection and the injury scenarios for Kyrie Irving and Dereck Lively II.
+
+> Injury limitation: CourtVision models historical availability for every projected player, but it does not yet contain an explicit current-injury override for every injured NBA player. The current snapshot contains four manually sourced overrides.
 
 CourtVision now projects every player expected on a 2026–27 roster. It includes:
 
