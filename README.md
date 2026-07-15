@@ -14,7 +14,7 @@ CourtVision asks what happens when every official move, projected player, aging 
 
 ---
 
-## EAST // NO RUNAWAY FAVORITE
+## EAST 
 
 | Seed | Team | Record | Chance to make ECF | Chance to win East |
 |---:|---|---:|---:|---:|
@@ -34,7 +34,7 @@ CourtVision asks what happens when every official move, projected player, aging 
 | 14 | Brooklyn Nets | **28–54** | 2.6% | 1.2% |
 | 15 | Indiana Pacers | **28–54** | 2.6% | 1.1% |
 
-### Detroit—not New York—is the model’s East favorite
+### Detroit, not New York is the model’s East favorite.
 
 Detroit owns the highest projected record and the highest probability of reaching the Finals from the East. The model sees a 54-win historical baseline, then applies a −4.08-win full-roster adjustment. After league-wide recentering, that becomes 51–31.
 
@@ -42,7 +42,7 @@ The leading projected Detroit values are Jalen Duren at +3.48 wins above replace
 
 If the question is whether New York should be favored because of Jalen Brunson, CourtVision’s answer is no. Brunson still projects as a star—25.28 PPG and +2.83 wins above replacement—but New York’s complete future roster is worth 1.91 fewer wins than the roster already embedded in its 49-win baseline. The Knicks finish third at 48–34, with a 10.6% chance of winning the East.
 
-### Why is Philadelphia only seventh after acquiring Jaylen Brown?
+### Why is Philly only seventh after acquiring Jaylen Brown?
 
 Because CourtVision does not award a headline-trade bonus.
 
@@ -89,7 +89,7 @@ If Kon’s efficiency materially depended on LaMelo, Charlotte may be too high. 
 
 ---
 
-## WEST // TWO TEAMS AT 54
+## WEST 
 
 | Seed | Team | Record | Chance to make WCF | Chance to win West |
 |---:|---|---:|---:|---:|
