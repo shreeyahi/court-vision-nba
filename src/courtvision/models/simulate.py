@@ -18,6 +18,13 @@ SCENARIO_FILE = (
     / "standings_scenarios.csv"
 )
 
+V2_STANDINGS_FILE = (
+    PROJECT_ROOT
+    / "data"
+    / "processed"
+    / "offseason_standings_2026_27.csv"
+)
+
 GAMES_FILE = (
     PROJECT_ROOT
     / "data"
@@ -31,7 +38,7 @@ OUTPUT_DIRECTORY = (
     / "processed"
 )
 
-DEFAULT_SCENARIO = "OFFICIAL_ONLY"
+DEFAULT_SCENARIO = "ROSTER_PROJECTION_V2"
 DEFAULT_SIMULATIONS = 20_000
 DEFAULT_RANDOM_SEED = 42
 
@@ -55,7 +62,21 @@ COUNT_METRICS = [
 def load_scenario(
     scenario_id: str,
 ) -> pd.DataFrame:
-    """Load one trade-adjusted standings scenario."""
+    """Load CourtVision V2 or one legacy trade scenario."""
+
+    if scenario_id == DEFAULT_SCENARIO:
+        if not V2_STANDINGS_FILE.exists():
+            raise FileNotFoundError(
+                f"Missing {V2_STANDINGS_FILE}. Run "
+                "build_offseason_standings.py first."
+            )
+
+        standings = pd.read_csv(V2_STANDINGS_FILE)
+
+        if len(standings) != 30:
+            raise ValueError("CourtVision V2 standings need 30 teams.")
+
+        return standings
 
     if not SCENARIO_FILE.exists():
         raise FileNotFoundError(
@@ -454,8 +475,54 @@ def sample_regular_season(
     projected_wins: np.ndarray,
     forecast_mae_wins: float,
     random_generator: np.random.Generator,
+    injury_adjustment_low: np.ndarray | None = None,
+    injury_adjustment_high: np.ndarray | None = None,
 ) -> np.ndarray:
-    """Sample future records using honest test error."""
+    """Sample records using model error and injury uncertainty."""
+
+    if injury_adjustment_low is None:
+        injury_adjustment_low = np.zeros_like(
+            projected_wins,
+            dtype=float,
+        )
+
+    if injury_adjustment_high is None:
+        injury_adjustment_high = np.zeros_like(
+            projected_wins,
+            dtype=float,
+        )
+
+    if not (
+        len(injury_adjustment_low)
+        == len(injury_adjustment_high)
+        == len(projected_wins)
+    ):
+        raise ValueError(
+            "Injury-adjustment arrays must match projected wins."
+        )
+
+    if (
+        (injury_adjustment_low > 0).any()
+        or (injury_adjustment_high < 0).any()
+        or (
+            injury_adjustment_low
+            > injury_adjustment_high
+        ).any()
+    ):
+        raise ValueError(
+            "Injury ranges must contain the zero/base case."
+        )
+
+    injury_adjustments = np.zeros_like(
+        projected_wins,
+        dtype=float,
+    )
+    uncertain = injury_adjustment_low < injury_adjustment_high
+    injury_adjustments[uncertain] = random_generator.triangular(
+        left=injury_adjustment_low[uncertain],
+        mode=np.zeros(int(uncertain.sum())),
+        right=injury_adjustment_high[uncertain],
+    )
 
     forecast_errors = random_generator.laplace(
         loc=0,
@@ -464,7 +531,9 @@ def sample_regular_season(
     )
 
     sampled_wins = (
-        projected_wins + forecast_errors
+        projected_wins
+        + injury_adjustments
+        + forecast_errors
     )
 
     for _ in range(5):
@@ -519,6 +588,16 @@ def run_simulations(
         "projected_wins"
     ].to_numpy(dtype=float)
 
+    injury_adjustment_low = standings.get(
+        "injury_win_adjustment_low",
+        pd.Series(0.0, index=standings.index),
+    ).to_numpy(dtype=float)
+
+    injury_adjustment_high = standings.get(
+        "injury_win_adjustment_high",
+        pd.Series(0.0, index=standings.index),
+    ).to_numpy(dtype=float)
+
     conferences = standings.set_index(
         "team"
     )["conference"].to_dict()
@@ -551,6 +630,8 @@ def run_simulations(
                 projected_wins,
                 forecast_mae_wins,
                 random_generator,
+                injury_adjustment_low,
+                injury_adjustment_high,
             )
         )
 
@@ -930,8 +1011,8 @@ def parse_arguments() -> argparse.Namespace:
         "--scenario",
         default=DEFAULT_SCENARIO,
         help=(
-            "Trade scenario ID. Default: "
-            "OFFICIAL_ONLY."
+            "Standings scenario ID. Default: "
+            "ROSTER_PROJECTION_V2."
         ),
     )
 

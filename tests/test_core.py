@@ -15,6 +15,11 @@ from courtvision.features.build_trade_impact import (
     calculate_team_deltas,
     integerize_wins,
 )
+from courtvision.features.build_roster_projections import (
+    development_group,
+    draft_bucket,
+    normalize_minutes_and_value,
+)
 from courtvision.models.simulate import (
     game_win_probability,
     run_simulations,
@@ -338,3 +343,87 @@ def test_current_trade_ledger_passes() -> None:
     )
 
     assert exit_code == 0
+
+
+def test_forecast_season_experience_labels() -> None:
+    """Career labels must describe the predicted 2026-27 season."""
+
+    assert development_group(0, 20) == "ROOKIE"
+    assert development_group(1, 21) == "SOPHOMORE"
+    assert development_group(2, 22) == "THIRD_YEAR"
+    assert development_group(12, 35) == "VETERAN_34_36"
+
+
+@pytest.mark.parametrize(
+    ("pick", "expected"),
+    [
+        (1, "PICKS_01_03"),
+        (8, "PICKS_04_10"),
+        (17, "PICKS_11_20"),
+        (27, "PICKS_21_30"),
+        (44, "SECOND_ROUND"),
+        (np.nan, "UNDRAFTED_OR_INTERNATIONAL"),
+    ],
+)
+def test_rookie_draft_buckets(
+    pick: float,
+    expected: str,
+) -> None:
+    """Every rookie must receive a stable historical prior."""
+
+    assert draft_bucket(pick) == expected
+
+
+def test_projected_rosters_allocate_240_minutes() -> None:
+    """Rookies and injuries cannot create impossible team minutes."""
+
+    rows = []
+
+    for team in ["AAA", "BBB"]:
+        for number in range(10):
+            rows.append(
+                {
+                    "team": team,
+                    "projected_pie": 0.10,
+                    "projected_minutes_per_game": 24.0,
+                    "availability_low": 0.50,
+                    "availability_base": 0.75,
+                    "availability_high": 1.00,
+                    "return_effectiveness_low": 0.80,
+                    "return_effectiveness_base": 0.90,
+                    "return_effectiveness_high": 1.00,
+                }
+            )
+
+    normalized = normalize_minutes_and_value(
+        pd.DataFrame(rows),
+        replacement=0.08,
+    )
+
+    totals = normalized.groupby("team")[
+        "allocated_season_mpg_base"
+    ].sum()
+
+    assert np.allclose(totals.to_numpy(), 240)
+
+
+def test_injury_ranges_change_sampled_season() -> None:
+    """Known injury uncertainty must reach Monte Carlo standings."""
+
+    projected = np.full(30, 41.0)
+    low = np.zeros(30)
+    high = np.zeros(30)
+    low[0] = -8.0
+    high[0] = 3.0
+
+    sampled = sample_regular_season(
+        projected_wins=projected,
+        forecast_mae_wins=9.56,
+        random_generator=np.random.default_rng(42),
+        injury_adjustment_low=low,
+        injury_adjustment_high=high,
+    )
+
+    assert sampled.sum() == pytest.approx(1230)
+    assert np.all(sampled >= 5)
+    assert np.all(sampled <= 77)
