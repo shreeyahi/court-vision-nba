@@ -40,7 +40,7 @@ Detroit owns the highest projected record and the highest probability of reachin
 
 The leading projected Detroit values are Jalen Duren at +3.48 wins above replacement and Cade Cunningham at +3.40.
 
-If the question is whether New York should be favored because of Jalen Brunson, CourtVision’s answer is no. Brunson still projects as a star—25.28 PPG and +2.83 wins above replacement—but New York’s complete future roster is worth 1.91 fewer wins than the roster already embedded in its 49-win baseline. The Knicks finish third at 48–34, with a 10.6% chance of winning the East.
+If the question is whether New York should be favored because of Jalen Brunson, CourtVision’s answer is no. Brunson still projects as a star—25.28 PPG and +2.83 wins above replacement, but New York’s complete future roster is worth 1.91 fewer wins than the roster already embedded in its 49-win baseline. The Knicks finish third at 48–34, with a 10.6% chance of winning the East.
 
 ### Why is Philly only seventh after acquiring Jaylen Brown?
 
@@ -83,7 +83,7 @@ The LaMelo Ball trade does hurt Charlotte. The model simply does not send the Ho
 | Coby White | 18.72 | +0.98 |
 | Brandon Miller | 20.42 | +0.93 |
 
-But there is a real blind spot here: CourtVision does not know that LaMelo’s playmaking created open looks for Knueppel. Kon’s sophomore projection is based on his own production, role, and historical sophomore development—not on an on/off or teammate-dependency model.
+But there is a real blind spot here: CourtVision does not know that LaMelo’s playmaking created open looks for Knueppel. Kon’s sophomore projection is based on his own production, role, and historical sophomore development. Not on an on/off or teammate-dependency model.
 
 If Kon’s efficiency materially depended on LaMelo, Charlotte may be too high. That is not something the current code can rule out.
 
@@ -197,7 +197,7 @@ There are two different groups that are easy to mix up:
 | Players drafted in 2025, including Cooper Flagg and Kon Knueppel | Sophomore model using real 2025–26 NBA statistics |
 | Players drafted in 2026 | Rookie prior based on historical draft bucket |
 
-Incoming top-three rookies such as Darryn Peterson, AJ Dybantsa, and Cameron Boozer receive a conservative 9.53-PPG prior and roughly +0.24 to +0.25 wins above replacement after team-minute allocation.
+Incoming top-three rookies such as Darryn Peterson, AJ Dybantsa, and Cameron Boozer receive a conservative 9.53 PPG prior and roughly +0.24 to +0.25 wins above replacement after team-minute allocation.
 
 Summer League receives zero weight. A few exhibition games are not treated as NBA evidence.
 
@@ -243,7 +243,7 @@ Sophomores and third-year players use career stage first. Veterans use their age
 | 34–36 | −.00550 | −2.402 | −.726 | −.0701 |
 | 37+ | −.00484 | −2.199 | −.402 | −.0841 |
 
-Paul George is the cleanest example. The 2026–27 projection treats him as 37, not as Oklahoma City-era Paul George:
+Paul George is the cleanest example. The 2026–27 projection treats him as 37, not as OKC PG:
 
 | Player | Age | Group | MPG | Points/36 | PPG | Availability | Value |
 |---|---:|---|---:|---:|---:|---:|---:|
@@ -282,7 +282,7 @@ PPG is published for interpretation. It is not added as a second win bonus becau
 
 There are two layers.
 
-**Historical availability applies to every projected player.** Games played are converted into an 82-game availability rate and combined across recent seasons.
+**Historical availability applies to every projected player.** Games played are converted into an 82 game availability rate and combined across recent seasons.
 
 **Current overrides apply only when a sourced recovery situation is entered manually.**
 
@@ -307,7 +307,7 @@ CourtVision does **not** currently contain an explicit override for every active
 
 ### Does CourtVision know whether a roster has enough shooting, playmaking, rim protection, or a true point guard?
 
-**No—not explicitly.**
+**No. Not explicitly.**
 
 The current player layer uses only:
 
@@ -348,7 +348,7 @@ A future fit layer should measure at minimum:
 5. Positional minutes: whether a roster can fill 48 credible minutes at every role
 6. Pair interactions: how returning-player performance changes with major teammates on and off the floor
 
-Until that exists, CourtVision is a roster-value model—not a lineup-chemistry model.
+Until that exists, CourtVision is a roster-value model. Not a lineup-chemistry model.
 
 ---
 
