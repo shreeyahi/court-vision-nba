@@ -29,6 +29,14 @@ TRADE_FILE = (
 )
 
 SEASONS = [
+    "2015-16",
+    "2016-17",
+    "2017-18",
+    "2018-19",
+    "2019-20",
+    "2020-21",
+    "2021-22",
+    "2022-23",
     "2023-24",
     "2024-25",
     "2025-26",
@@ -294,6 +302,16 @@ def combine_season(
         1,
     )
 
+    combined["points_per_36"] = np.where(
+        combined["minutes_per_game"] > 0,
+        (
+            combined["points_per_game"]
+            / combined["minutes_per_game"]
+            * 36
+        ),
+        0.0,
+    )
+
     print(
         f"{season}: combined "
         f"{len(combined):,} players"
@@ -403,7 +421,7 @@ def validate_player_seasons(
 def build_player_dataset(
     force: bool = False,
 ) -> pd.DataFrame:
-    """Build three seasons of player statistics."""
+    """Build the historical player-season dataset."""
 
     season_frames: list[pd.DataFrame] = []
 
